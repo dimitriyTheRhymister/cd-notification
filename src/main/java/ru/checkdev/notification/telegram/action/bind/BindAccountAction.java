@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.checkdev.notification.domain.Profile;
 import ru.checkdev.notification.domain.UserTelegram;
 import ru.checkdev.notification.dto.ProfileTgDTO;
+import ru.checkdev.notification.exception.IdNotFoundException;
 import ru.checkdev.notification.service.UserTelegramService;
 import ru.checkdev.notification.telegram.SessionTg;
 import ru.checkdev.notification.telegram.action.Action;
@@ -58,6 +59,9 @@ public class BindAccountAction implements Action {
                 text = alreadyExist ? "Данный аккаунт CheckDev уже привязан к другому аккаунту Telegram"
                         : "Ваш аккаунт CheckDev успешно привязан к данному аккаунту Telegram";
             }
+        } catch (IdNotFoundException e) {
+            log.error("WebClient doPost error: {}", e.getMessage());
+            text = String.format("Сервис недоступен, попробуйте позже%s%s", ls, "/start");
         } catch (Exception e) {
             log.error("WebClient doPost error: {}", e.getMessage());
             text = String.format("Сервис недоступен, попробуйте позже%s%s", ls, "/start");

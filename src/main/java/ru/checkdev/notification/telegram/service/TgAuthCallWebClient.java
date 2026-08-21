@@ -6,8 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 import ru.checkdev.notification.domain.Profile;
+import ru.checkdev.notification.exception.AppException;
+import ru.checkdev.notification.exception.IdNotFoundException;
 
 /**
  * Класс реализует методы get и post для отправки сообщений через WebClient
@@ -37,6 +40,12 @@ public class TgAuthCallWebClient implements TgCall {
                 .uri(url)
                 .retrieve()
                 .bodyToMono(Profile.class)
+                .onErrorMap(WebClientResponseException.class, ex -> {
+                    if (ex.getStatusCode().value() == 404) {
+                        return new IdNotFoundException("Профиль не найден: " + url);
+                    }
+                    return new AppException("Ошибка при обращении к сервису: " + ex.getStatusCode());
+                })
                 .doOnError(err -> log.error("API not found: {}", err.getMessage()));
     }
 
@@ -55,6 +64,12 @@ public class TgAuthCallWebClient implements TgCall {
                 .bodyValue(profile)
                 .retrieve()
                 .bodyToMono(Object.class)
+                .onErrorMap(WebClientResponseException.class, ex -> {
+                    if (ex.getStatusCode().value() == 404) {
+                        return new IdNotFoundException("Ресурс не найден: " + url);
+                    }
+                    return new AppException("Ошибка при обращении к сервису: " + ex.getStatusCode());
+                })
                 .doOnError(err -> log.error("API not found: {}", err.getMessage()));
     }
 
@@ -65,6 +80,12 @@ public class TgAuthCallWebClient implements TgCall {
                 .uri(url)
                 .retrieve()
                 .bodyToMono(Object.class)
+                .onErrorMap(WebClientResponseException.class, ex -> {
+                    if (ex.getStatusCode().value() == 404) {
+                        return new IdNotFoundException("Ресурс не найден: " + url);
+                    }
+                    return new AppException("Ошибка при обращении к сервису: " + ex.getStatusCode());
+                })
                 .doOnError(err -> log.error("API not found: {}", err.getMessage()));
     }
 }

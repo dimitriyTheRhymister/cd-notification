@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import ru.checkdev.notification.domain.Profile;
 import ru.checkdev.notification.dto.ProfileTgDTO;
+import ru.checkdev.notification.exception.IdNotFoundException;
 import ru.checkdev.notification.service.EurekaUriProvider;
 
 import java.util.Calendar;

@@ -11,20 +11,18 @@ import ru.checkdev.notification.service.UserTelegramService;
 import ru.checkdev.notification.telegram.action.Action;
 import ru.checkdev.notification.telegram.action.bind.*;
 import ru.checkdev.notification.telegram.action.check.CheckAction;
+import ru.checkdev.notification.telegram.action.forget.ForgetAction;
 import ru.checkdev.notification.telegram.action.info.InfoAction;
 import ru.checkdev.notification.telegram.action.notify.NotifyAction;
 import ru.checkdev.notification.telegram.action.notify.UnNotifyAction;
 import ru.checkdev.notification.telegram.action.reg.*;
-import ru.checkdev.notification.telegram.service.TgCall;
+import ru.checkdev.notification.telegram.service.TgCallRetry;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Класс создание экземпляр класса TgBotFake для профиля develop без использованием Telegram API
- *
- * @author Dmitry Stepanov, user Dmitry
- * @since 04.12.2023
+ * Инициализация телеграм бота для профиля develop.
  */
 @Component
 @Profile("develop")
@@ -33,7 +31,7 @@ import java.util.Map;
 public class TgConfigFake {
 
     private final SessionTg sessionTg = new SessionTg();
-    private final TgCall tgCall;
+    private final TgCallRetry tgCall;
     private final UserTelegramService userTelegramService;
     @Value("${tg.username}")
     private String username;
@@ -65,6 +63,7 @@ public class TgConfigFake {
                                 String.format("%s/login", uriProvider.getUri(SERVICE_ID)))
                 ),
                 "/check", List.of(new CheckAction(sessionTg, tgCall, userTelegramService)),
+                "/forget", List.of(new ForgetAction(sessionTg, tgCall, userTelegramService)),
                 "/notify", List.of(new NotifyAction(sessionTg, userTelegramService)),
                 "/unnotify", List.of(new UnNotifyAction(sessionTg, userTelegramService)),
                 "/bind", List.of(new BindAskEmailAction(userTelegramService),

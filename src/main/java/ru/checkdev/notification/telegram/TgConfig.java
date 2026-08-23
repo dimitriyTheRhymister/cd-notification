@@ -19,20 +19,13 @@ import ru.checkdev.notification.telegram.action.info.InfoAction;
 import ru.checkdev.notification.telegram.action.notify.NotifyAction;
 import ru.checkdev.notification.telegram.action.notify.UnNotifyAction;
 import ru.checkdev.notification.telegram.action.reg.*;
-import ru.checkdev.notification.telegram.service.TgCall;
+import ru.checkdev.notification.telegram.service.TgCallRetry;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Инициализация телеграм бот,
- * username = берем из properties
- * token = берем из properties
- * <p>
- * Класс создание экземпляр класса TgBot для профиля default c использованием Telegram API
- *
- * @author Dmitry Stepanov, user Dmitry
- * @since 12.09.2023
+ * Инициализация телеграм бот.
  */
 @Component
 @Profile("default")
@@ -40,7 +33,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TgConfig {
     private final SessionTg sessionTg = new SessionTg();
-    private final TgCall tgCall;
+    private final TgCallRetry tgCall;
     private final UserTelegramService userTelegramService;
     @Value("${tg.username}")
     private String username;

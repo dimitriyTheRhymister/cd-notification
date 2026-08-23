@@ -15,6 +15,11 @@ public class EurekaUriProvider {
 
     public String getUri(String serviceId) {
         List<ServiceInstance> list = discoveryClient.getInstances(serviceId);
+        if (list.isEmpty()) {
+            // Если сервис не найден в Eureka, возвращаем запасной URL
+            // (чтобы сервис мог работать автономно в профиле develop)
+            return "http://localhost:8080"; // Например, URL сайта по умолчанию
+        }
         ServiceInstance instance = list.get(0);
         return instance.getUri().toString();
     }

@@ -19,7 +19,7 @@ import ru.checkdev.notification.telegram.action.info.InfoAction;
 import ru.checkdev.notification.telegram.action.notify.NotifyAction;
 import ru.checkdev.notification.telegram.action.notify.UnNotifyAction;
 import ru.checkdev.notification.telegram.action.reg.*;
-import ru.checkdev.notification.telegram.service.TgCallRetry;
+import ru.checkdev.notification.telegram.service.TgCall;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TgConfig {
     private final SessionTg sessionTg = new SessionTg();
-    private final TgCallRetry tgCall;
+    private final TgCall tgCall;
     private final UserTelegramService userTelegramService;
     @Value("${tg.username}")
     private String username;

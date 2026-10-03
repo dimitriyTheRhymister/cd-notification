@@ -6,7 +6,10 @@ target/
 *.ear
 
 # Logs
+**/logs/
+logs/
 *.log
+*.log.*
 *.pid
 
 # IDE

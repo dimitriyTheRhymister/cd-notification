@@ -1,6 +1,5 @@
 package ru.checkdev.notification.repository;
 
-import org.springframework.test.fake.CrudRepositoryFake;
 import ru.checkdev.notification.domain.SubscribeTopic;
 import ru.checkdev.notification.domain.UserTelegram;
 

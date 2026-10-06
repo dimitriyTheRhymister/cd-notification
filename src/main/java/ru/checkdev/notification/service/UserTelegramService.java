@@ -1,6 +1,7 @@
 package ru.checkdev.notification.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.checkdev.notification.domain.UserTelegram;
 import ru.checkdev.notification.repository.UserTelegramRepository;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserTelegramService {
     private final UserTelegramRepository repository;
 
@@ -18,6 +20,7 @@ public class UserTelegramService {
             repository.save(userTelegram);
             return true;
         } catch (Exception e) {
+            log.error("Save UserTelegram error: {}", e.getMessage());
             return false;
         }
     }

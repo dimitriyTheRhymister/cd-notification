@@ -16,6 +16,10 @@ import ru.checkdev.notification.telegram.action.info.InfoAction;
 import ru.checkdev.notification.telegram.action.notify.NotifyAction;
 import ru.checkdev.notification.telegram.action.notify.UnNotifyAction;
 import ru.checkdev.notification.telegram.action.reg.*;
+import ru.checkdev.notification.telegram.action.unbind.UnbindAskEmailAction;
+import ru.checkdev.notification.telegram.action.unbind.UnbindAskPasswordAction;
+import ru.checkdev.notification.telegram.action.unbind.UnbindPutEmailAction;
+import ru.checkdev.notification.telegram.action.unbind.UnbindPutPasswordAction;
 import ru.checkdev.notification.telegram.service.TgCall;
 
 import java.util.List;
@@ -71,7 +75,13 @@ public class TgConfigFake {
                         new BindAskPasswordAction(),
                         new BindPutPasswordAction(sessionTg),
                         new BindAccountAction(sessionTg, tgCall, userTelegramService)),
-                "/unbind", List.of(new UnbindAccountAction(userTelegramService))
+                "/unbind", List.of(
+                        new UnbindAskEmailAction(),
+                        new UnbindPutEmailAction(sessionTg),
+                        new UnbindAskPasswordAction(),
+                        new UnbindPutPasswordAction(sessionTg),
+                        new UnbindAccountAction(sessionTg, tgCall, userTelegramService)
+                )
         );
         TgBootFake menu = new TgBootFake(actionMap, username, token);
         return menu;

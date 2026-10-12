@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    container_name: cd-notification-db
+    environment:
+      - POSTGRES_DB=cd_notification
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    ports:
+      - "5436:5432"
+    restart: always
+
+  notification:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cd-notification
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/cd_notification
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - EUREKA_CLIENT_ENABLED=false
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+    ports:
+      - "9920:9920"
+    depends_on:
+      - db
+    restart: always
